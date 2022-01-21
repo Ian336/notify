@@ -1,0 +1,27 @@
+{
+  "name": "crx-thumbs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "crx": "npm run build-watch",
+    "alpha": "vue-cli-service build --mode alpha",
+    "size": "npm run build --report",
+    "build": "vue-cli-service build",
+    "dev": "vue-cli-service serve",
+    "build-watch": "vue-cli-service build-watch"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "babel-plugin-component": "^1.1.1",
+    "core-js": "^3.4.3",
+    "element-ui": "^2.13.0",
+    "vue": "^2.6.10"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.1.0",
+    "@vue/cli-service": "^4.1.0",
+    "copy-webpack-plugin": "^4.6.0",
+    "vue-cli-plugin-chrome-ext": "^0.0.5",
+    "vue-template-compiler": "^2.6.10"
+  }
+}

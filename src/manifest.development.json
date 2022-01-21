@@ -1,0 +1,32 @@
+{
+	"manifest_version": 2,
+	"name": "xuzhiqiang",
+	"description": "休息提醒",
+	"icons": {
+		"19": "assets/icon/19.png",
+		"38": "assets/icon/38.png",
+		"76": "assets/icon/76.png"
+	},
+	"version": "0.0.1",
+	"options_page": "options.html",
+	"browser_action": {
+		"default_title": "休息提醒",
+		"default_icon": {
+			"19": "assets/icon/19.png",
+			"38": "assets/icon/38.png",
+			"76": "assets/icon/76.png"
+		},
+		"default_popup": "popup.html"
+	},
+	"content_scripts": [{
+		"matches": ["file://*/*"],
+		"js": ["assets/js/content.js"],
+		"run_at": "document_end"
+	}],
+	"background": {
+		"page": "background.html"
+	},
+	"web_accessible_resources": [ "assets/up.png", "assets/down.png", "assets/left.png", "assets/right.png" ],
+	"permissions": ["storage", "notifications", "tabs", "bookmarks"],
+	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}

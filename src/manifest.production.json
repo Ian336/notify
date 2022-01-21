@@ -1,0 +1,31 @@
+{
+	"manifest_version": 2,
+	"name": "thumbs",
+	"description": "gesture && today-poetry",
+	"icons": {
+		"19": "assets/icon/76.png",
+		"38": "assets/icon/76.png",
+		"76": "assets/icon/76.png"
+	},
+	"version": "0.0.1",
+	"options_page": "options.html",
+	"browser_action": {
+		"default_title": "休息提醒",
+		"default_icon": {
+      "19": "assets/icon/76.png",
+      "38": "assets/icon/76.png",
+      "76": "assets/icon/76.png"
+		},
+		"default_popup": "popup.html"
+	},
+	"content_scripts": [{
+		"matches": ["https://*/*", "http://*/*"],
+		"js": ["assets/js/content.js"],
+		"run_at": "document_end"
+	}],
+	"background": {
+		"page": "background.html"
+	},
+	"web_accessible_resources": [ "assets/up.png", "assets/down.png", "assets/left.png", "assets/right.png", "assets/css/*"],
+	"permissions": ["storage", "notifications", "tabs", "bookmarks"]
+}
