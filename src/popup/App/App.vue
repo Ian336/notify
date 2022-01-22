@@ -46,9 +46,27 @@
           placeholder="单位分钟"
         ></el-input-number>
         <el-button size="mini" @click="test()">测试一下</el-button>
+        <el-switch
+          v-model="isLoadMock"
+          size="mini"
+          @change="loadMockChange"
+        ></el-switch>
       </el-col>
     </el-row>
-
+    <el-row>
+      <el-col>
+        <el-switch
+          v-model="isOpenMyXMLHttpRequest"
+          size="mini"
+          @change="openMyXMLHttpRequestChagne"
+        ></el-switch>
+        <el-input v-model="myXMLHttpRequestData.url"></el-input>
+        <el-input
+          type="textarea"
+          v-model="myXMLHttpRequestData.response"
+        ></el-input>
+      </el-col>
+    </el-row>
     <el-row style="margin-top: 10px" type="flex">
       <el-col>
         Top5计划
@@ -80,11 +98,15 @@
 </template>
 
 <script>
-import { Message, } from 'element-ui';
+
+import { Message } from 'element-ui'
 export default {
   name: 'popup',
-  data () {
+  data() {
     return {
+      myXMLHttpRequestData: {},
+      isOpenMyXMLHttpRequest:false,
+      isLoadMock: false,
       isOpen: true,
       timeStart: new Date().setDate(1),
       timeEnd: new Date().setDate(new Date().getDate() - 1),
@@ -92,38 +114,61 @@ export default {
       tasks: [],
       defaultNotifyTime: 60,
       workTime: '敬业时长',
-      totolWorkTimes: {}
+      totolWorkTimes: {},
     }
   },
-  mounted () {
+  mounted() {
     this.getChromeStorage()
   },
   methods: {
-    isOpenNotify (val) {
-      this.setStorage({ isOpen: val })  
-      chrome.runtime.sendMessage({ isOpen: val,notifyTime:this.defaultNotifyTime })
-    },
-    timeEndChange (val) {
-      this.workTime = '敬业时长'
-    },
-    timeStartChange (val) {
-      this.workTime = '敬业时长'
-    },
-    getChromeStorage () {
-      chrome.storage.local.get(['notifyTime', 'tasks', 'closeNotify', 'isOpen'], (res) => {  
-        //不支持?? 
-        this.isOpen = res.isOpen===undefined? true: res.isOpen
-        this.tasks = JSON.parse(res.tasks||'[]')
-        this.defaultNotifyTime=res.notifyTime||60
+    openMyXMLHttpRequestChagne(value) {
+      console.log('发送子类',{ isOpenMyXMLHttpRequest: value, myXMLHttpRequestData:[this.myXMLHttpRequestData]})
+      this.sendMessageToContentScript({ isOpenMyXMLHttpRequest: value, myXMLHttpRequestData:[this.myXMLHttpRequestData]}, function(response) {
+        console.log('来自content的回复：' + response)
       })
-    
     },
-    notifyTimeChange (value) {
-      this.setStorage({notifyTime:value})
-          chrome.runtime.sendMessage({ notifyTime: value,isOpen:this.isOpen })
+    sendMessageToContentScript(message, callback) {
+      chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, message, function(response) {
+          if (callback) callback(response)
+        })
+      })
     },
-    getWokeTime () {
-      chrome.storage.local.get(['totolWorkTimes'], res => {
+    loadMockChange(value) {
+      this.sendMessageToContentScript({ isload: value }, function(response) {
+        console.log('来自content的回复：' + response)
+      })
+    },
+    isOpenNotify(val) {
+      this.setStorage({ isOpen: val })
+      chrome.runtime.sendMessage({
+        isOpen: val,
+        notifyTime: this.defaultNotifyTime,
+      })
+    },
+    timeEndChange(val) {
+      this.workTime = '敬业时长'
+    },
+    timeStartChange(val) {
+      this.workTime = '敬业时长'
+    },
+    getChromeStorage() {
+      chrome.storage.local.get(
+        ['notifyTime', 'tasks', 'closeNotify', 'isOpen'],
+        (res) => {
+          //不支持??
+          this.isOpen = res.isOpen === undefined ? true : res.isOpen
+          this.tasks = JSON.parse(res.tasks || '[]')
+          this.defaultNotifyTime = res.notifyTime || 60
+        }
+      )
+    },
+    notifyTimeChange(value) {
+      this.setStorage({ notifyTime: value })
+      chrome.runtime.sendMessage({ notifyTime: value, isOpen: this.isOpen })
+    },
+    getWokeTime() {
+      chrome.storage.local.get(['totolWorkTimes'], (res) => {
         var result = 0
         var total = JSON.parse(res.totolWorkTimes)
         for (let i in total) {
@@ -131,48 +176,47 @@ export default {
             result += total[i] - 9 * 3600000
           }
         }
-        result = parseInt((result / 3600000)) + 'h' + parseInt(result % 3600000 / 60000) + 'm'
+        result =
+          parseInt(result / 3600000) +
+          'h' +
+          parseInt((result % 3600000) / 60000) +
+          'm'
         this.workTime = result
       })
     },
-    addTask () {
+    addTask() {
       if (this.tasks.length > 4) {
         return Message('最多5个任务')
       }
       this.tasks.push(this.task)
-      this.setStorage({tasks:JSON.stringify(this.tasks)})
+      this.setStorage({ tasks: JSON.stringify(this.tasks) })
       this.task = ' '
     },
-    delTask (index) {
+    delTask(index) {
       this.tasks.splice(index, 1)
-      this.setStorage({tasks:JSON.stringify(this.tasks)})
-      
+      this.setStorage({ tasks: JSON.stringify(this.tasks) })
     },
-    setStorage(value,callback=()=>{}){
-        chrome.storage.local.set(
-        value,
-        function () {
-          callback()
-          console.log('设置',value)
-        }
-      )
-    }
-    ,
+    setStorage(value, callback = () => {}) {
+      chrome.storage.local.set(value, function() {
+        callback()
+        console.log('设置', value)
+      })
+    },
     //跳转
-    goToOption () {
+    goToOption() {
       chrome.tabs.create({
         url: 'chrome-extension://gjlaanimncgijljdjiplobfeojalaaak/options.html',
       })
     },
     //发送
-    test () {
+    test() {
       chrome.notifications.create('limitNotify', {
         type: 'image',
         iconUrl: chrome.extension.getURL('assets/icon/500.png'),
         title: '主人',
         message: '该休息一下了!!!',
-        requireInteraction: true,   
-        imageUrl: '/assets/cat.png'
+        requireInteraction: true,
+        imageUrl: '/assets/cat.png',
       })
     },
   },

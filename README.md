@@ -1,6 +1,14 @@
-1 chrome.tabs.create({ url: 'https://www.baidu.com' })跳转新的页面
-2 chrome.tabs.update(tabId, { url: 'http://www.google.com' });跳转到原来的页面
-3 设置同步不可见的 storage,也可以直接用原来的方法设置可见的 stroage
+## 此项目是多页面项目,利用 webpack 打包多个页面,生成 dist 文件,同事监听页面的变动,--watch 重新打包,得已热更新
+
+### 代理 XMLHttpRequest
+
+1. 利用继承关系,现在页面插入修改的 XMLHttpRequest
+2. 监听 message 事件
+3. popup 页面发送信息过来,sendMessage 发送对应的消息,先发送到 content 页面,content 接收后再用 possMessage 转发到 web 页面,调用最开始写好的 XMLHttpRequest
+
+### popup 页面
+
+1. 可以使用 chrome.stoage.local chrome.stoage.sync(可以同步) chrome.runtime chrome.extions 等等接口,持久存储 storage 可以和 background 页面通用
 
 ```js
 chrome.storage.local.get(['notifyTime'], (res) => {
@@ -17,7 +25,7 @@ chrome.storage.local.set(
 )
 ```
 
-4 消息通知<=>消息监听
+2. 与 contenscript\background 通信可以用 chrome.runtime.onmessage 和 chrome.runtime.sendMessage
 
 ```js
 chrome.runtime.sendMessage({ closeNotify: true })
@@ -36,7 +44,69 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 })
 ```
 
-5 弹窗提醒
+3. 与 content 页面的通信不能直接同上,而是需要先查询到 tabs 页面,之后 content 页面的 omMessage 才能监听到
+
+```js
+
+  > popu页面
+  this.sendMessageToContentScript({ isOpenMyXMLHttpRequest: value, myXMLHttpRequestData:[this.myXMLHttpRequestData]}, function(response) {
+        console.log('来自content的回复：' + response)
+      })
+
+
+ sendMessageToContentScript(message, callback) {
+      chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, message, function(response) {
+          if (callback) callback(response)
+        })
+      })
+    },
+    > content页面 直接用onMessage监听即可
+
+```
+
+### backgournd 页面
+
+1. background 是后台页面,可以设置是否持续后台执行,与 popup,content 通信也可以使用 chrome.runtime.onmessage 和 chrome.runtime.sendMessage
+2. 存储也是类似 popup
+3. 与 popup 不同的是,此页面是一直后台执行,而 popup 是点击才开始执行
+
+### content 页面
+
+1. content 页面是插入实际 web 页面的脚本,可以操作 dom,共享 window api,但是不共享 web 页面的 js 信息,也就是说 content 的 window 和 web 页面的 window 是不同
+2. contennt 页面可以动态生成 script,从而达到操作 web 页面 js
+
+```js
+let script3 = document.createElement('script')
+//获取本地存储的js库,也可以直接取cdn地址
+script1.src = chrome.extension.getURL('assets/jquery.js')
+script1.id = 'jQuery'
+document.body.appendChild(script1)
+```
+
+3. 同事 web 页面的 js 也不能直接操作 content 页面的 js,所以需要用到 postMessage 和 message 事件相互通信
+
+```js
+window.postMessage(
+  {
+    isOpenMyXMLHttpRequest: message.isOpenMyXMLHttpRequest,
+    myXMLHttpRequestData: message.myXMLHttpRequestData,
+  },
+  '*'
+)
+
+window.addEventListener('message', function(e) {
+  console.log({ e })
+  setMyXMLHTTPRequest(
+    e.data.isOpenMyXMLHttpRequest,
+    e.data.myXMLHttpRequestData
+  )
+})
+```
+
+1. chrome.tabs.create({ url: 'https://www.baidu.com' })跳转新的页面
+2. chrome.tabs.update(tabId, { url: 'http://www.google.com' });跳转到原来的页面
+3. 弹窗提醒
 
 ```js
 chrome.notifications.create(null, {

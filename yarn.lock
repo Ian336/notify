@@ -2064,6 +2064,15 @@
   "resolved" "https://registry.npm.taobao.org/cli-spinners/download/cli-spinners-2.2.0.tgz"
   "version" "2.2.0"
 
+"clipboard@^2.0.4":
+  "integrity" "sha512-Y6WO0unAIQp5bLmk1zdThRhgJt/x3ks6f30s3oE3H1mgIEU33XyQjEf8gsf6DxC7NPX8Y1SsNWjUjL/ywLnnbQ=="
+  "resolved" "https://registry.npmjs.org/clipboard/-/clipboard-2.0.8.tgz"
+  "version" "2.0.8"
+  dependencies:
+    "good-listener" "^1.2.2"
+    "select" "^1.1.2"
+    "tiny-emitter" "^2.0.0"
+
 "clipboardy@^2.0.0":
   "integrity" "sha1-ASOgyPrJLyVtxWM14LuL6XpJCaU= sha512-2pzOUxWcLlXWtn+Jd6js3o12TysNOOVes/aQfg+MT/35vrxWzedHlLwyoJpXjsFKWm95BTNEcMGD9+a7mKzZkQ=="
   "resolved" "https://registry.npm.taobao.org/clipboardy/download/clipboardy-2.1.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fclipboardy%2Fdownload%2Fclipboardy-2.1.0.tgz"
@@ -2173,6 +2182,11 @@
   dependencies:
     "delayed-stream" "~1.0.0"
 
+"commander@*", "commander@2.17.x":
+  "integrity" "sha1-vXerfebelCBc6sxy8XFtKfIKd78="
+  "resolved" "https://registry.npm.taobao.org/commander/download/commander-2.17.1.tgz?cache=0&sync_timestamp=1573464028535&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-2.17.1.tgz"
+  "version" "2.17.1"
+
 "commander@^2.18.0":
   "integrity" "sha1-/UhehMA+tIgcIHIrpIA16FMa6zM= sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ=="
   "resolved" "https://registry.npm.taobao.org/commander/download/commander-2.20.3.tgz?cache=0&sync_timestamp=1573464028535&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-2.20.3.tgz"
@@ -2192,11 +2206,6 @@
   "integrity" "sha1-/UhehMA+tIgcIHIrpIA16FMa6zM= sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ=="
   "resolved" "https://registry.npm.taobao.org/commander/download/commander-2.20.3.tgz?cache=0&sync_timestamp=1573464028535&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-2.20.3.tgz"
   "version" "2.20.3"
-
-"commander@2.17.x":
-  "integrity" "sha1-vXerfebelCBc6sxy8XFtKfIKd78="
-  "resolved" "https://registry.npm.taobao.org/commander/download/commander-2.17.1.tgz?cache=0&sync_timestamp=1573464028535&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-2.17.1.tgz"
-  "version" "2.17.1"
 
 "commondir@^1.0.1":
   "integrity" "sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs="
@@ -2774,6 +2783,11 @@
   "integrity" "sha1-3zrhmayt+31ECqrgsp4icrJOxhk="
   "resolved" "https://registry.npm.taobao.org/delayed-stream/download/delayed-stream-1.0.0.tgz"
   "version" "1.0.0"
+
+"delegate@^3.1.2":
+  "integrity" "sha512-IofjkYBZaZivn0V8nnsMJGBr4jVLxHDheKSW88PyxS5QC4Vo9ZbZVvhzlSxY87fVq3STR6r+4cGepyHkcWOQSw=="
+  "resolved" "https://registry.npmjs.org/delegate/-/delegate-3.2.0.tgz"
+  "version" "3.2.0"
 
 "depd@~1.1.2":
   "integrity" "sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak="
@@ -3597,6 +3611,13 @@
     "ignore" "^4.0.3"
     "pify" "^4.0.1"
     "slash" "^2.0.0"
+
+"good-listener@^1.2.2":
+  "integrity" "sha1-1TswzfkxPf+33JoNR3CWqm0UXFA="
+  "resolved" "https://registry.npmjs.org/good-listener/-/good-listener-1.2.2.tgz"
+  "version" "1.2.2"
+  dependencies:
+    "delegate" "^3.1.2"
 
 "graceful-fs@^4.1.11", "graceful-fs@^4.1.15", "graceful-fs@^4.1.2", "graceful-fs@^4.1.6", "graceful-fs@^4.2.2":
   "integrity" "sha1-ShL/G2A3bvCYYsIJPt2Qgyi+hCM= sha512-a30VEBm4PEdx1dRB7MFK7BejejvCvBronbLjht+sHuGYj8PHs7M/5Z+rt5lw551vZ7yfTCj4Vuyy3mSJytDWRQ=="
@@ -4938,6 +4959,13 @@
   "version" "0.5.1"
   dependencies:
     "minimist" "0.0.8"
+
+"mockjs@^1.1.0":
+  "integrity" "sha512-eQsKcWzIaZzEZ07NuEyO4Nw65g0hdWAyurVol1IPl1gahRwY+svqzfgfey8U8dahLwG44d6/RwEzuK52rSa/JQ=="
+  "resolved" "https://registry.npmjs.org/mockjs/-/mockjs-1.1.0.tgz"
+  "version" "1.1.0"
+  dependencies:
+    "commander" "*"
 
 "move-concurrently@^1.0.1":
   "integrity" "sha1-viwAX9oy4LKa8fBdfEszIUxwH5I="
@@ -6518,6 +6546,11 @@
   "resolved" "https://registry.npm.taobao.org/select-hose/download/select-hose-2.0.0.tgz"
   "version" "2.0.0"
 
+"select@^1.1.2":
+  "integrity" "sha1-DnNQrN7ICxEIUoeG7B1EGNEbOW0="
+  "resolved" "https://registry.npmjs.org/select/-/select-1.1.2.tgz"
+  "version" "1.1.2"
+
 "selfsigned@^1.10.7":
   "integrity" "sha1-2lgZ/QSdVXTyjoipvMbbxubzkGs= sha512-8M3wBCzeWIJnQfl43IKwOmC4H/RAp50S8DF60znzjW5GVqTcSe2vWclt7hmYVPkKPlHWOu5EaWOMZ2Y6W8ZXTA=="
   "resolved" "https://registry.npm.taobao.org/selfsigned/download/selfsigned-1.10.7.tgz"
@@ -7241,6 +7274,11 @@
   "resolved" "https://registry.npm.taobao.org/timsort/download/timsort-0.3.0.tgz"
   "version" "0.3.0"
 
+"tiny-emitter@^2.0.0":
+  "integrity" "sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q=="
+  "resolved" "https://registry.npmjs.org/tiny-emitter/-/tiny-emitter-2.1.0.tgz"
+  "version" "2.1.0"
+
 "to-arraybuffer@^1.0.0":
   "integrity" "sha1-fSKbH8xjfkZsoIEYCDanqr/4P0M="
   "resolved" "https://registry.npm.taobao.org/to-arraybuffer/download/to-arraybuffer-1.0.1.tgz"
@@ -7571,6 +7609,13 @@
   "resolved" "https://registry.npm.taobao.org/vue-hot-reload-api/download/vue-hot-reload-api-2.3.4.tgz?cache=0&sync_timestamp=1568190386192&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-hot-reload-api%2Fdownload%2Fvue-hot-reload-api-2.3.4.tgz"
   "version" "2.3.4"
 
+"vue-json-viewer@^2.2.21":
+  "integrity" "sha512-FZL5pZM63nJjAWqOIkiA9KtAesIhUwmFkAaBZ4eCIPb0jDczL59bHgbdJOkvP7rsFVuQox5SHAxj7O7SrJrTvw=="
+  "resolved" "https://registry.npmjs.org/vue-json-viewer/-/vue-json-viewer-2.2.21.tgz"
+  "version" "2.2.21"
+  dependencies:
+    "clipboard" "^2.0.4"
+
 "vue-loader@^15.7.2":
   "integrity" "sha1-hXy54w61/CXmbbSNzn5PdoYCojw= sha512-yFksTFbhp+lxlm92DrKdpVIWMpranXnTEuGSc0oW+Gk43M9LWaAmBTnfj5+FCdve715mTHvo78IdaXf5TbiTJg=="
   "resolved" "https://registry.npm.taobao.org/vue-loader/download/vue-loader-15.8.3.tgz"
@@ -7603,7 +7648,7 @@
   "resolved" "https://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@^2.5.17", "vue@^2.6.10":
+"vue@^2.5.17", "vue@^2.6.10", "vue@^2.6.9":
   "integrity" "sha1-dllNh31LEiNEBuhONSdcbVFBJcU= sha512-VfPwgcGABbGAue9+sfrD4PuwFar7gPb1yl1UK1MwXoQPAw0BKSqWfoYCT/ThFrdEVWoI51dBuyCoiNU9bZDZxQ=="
   "resolved" "https://registry.npm.taobao.org/vue/download/vue-2.6.11.tgz"
   "version" "2.6.11"
