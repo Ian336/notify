@@ -7609,6 +7609,13 @@
   "resolved" "https://registry.npm.taobao.org/vue-hot-reload-api/download/vue-hot-reload-api-2.3.4.tgz?cache=0&sync_timestamp=1568190386192&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-hot-reload-api%2Fdownload%2Fvue-hot-reload-api-2.3.4.tgz"
   "version" "2.3.4"
 
+"vue-json-editor@^1.4.3":
+  "integrity" "sha512-st9HdXBgCnyEmmfWrZQiKzp4KuYXzmYVUNDn5h6Fa18MrrGS1amnyUFyv7hQFsNBDW27B7BKkdGOqszYT1srAg=="
+  "resolved" "https://registry.npmjs.org/vue-json-editor/-/vue-json-editor-1.4.3.tgz"
+  "version" "1.4.3"
+  dependencies:
+    "vue" "^2.2.6"
+
 "vue-json-viewer@^2.2.21":
   "integrity" "sha512-FZL5pZM63nJjAWqOIkiA9KtAesIhUwmFkAaBZ4eCIPb0jDczL59bHgbdJOkvP7rsFVuQox5SHAxj7O7SrJrTvw=="
   "resolved" "https://registry.npmjs.org/vue-json-viewer/-/vue-json-viewer-2.2.21.tgz"
@@ -7648,7 +7655,7 @@
   "resolved" "https://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@^2.5.17", "vue@^2.6.10", "vue@^2.6.9":
+"vue@^2.2.6", "vue@^2.5.17", "vue@^2.6.10", "vue@^2.6.9":
   "integrity" "sha1-dllNh31LEiNEBuhONSdcbVFBJcU= sha512-VfPwgcGABbGAue9+sfrD4PuwFar7gPb1yl1UK1MwXoQPAw0BKSqWfoYCT/ThFrdEVWoI51dBuyCoiNU9bZDZxQ=="
   "resolved" "https://registry.npm.taobao.org/vue/download/vue-2.6.11.tgz"
   "version" "2.6.11"

@@ -17,6 +17,7 @@
     "element-ui": "^2.13.0",
     "mockjs": "^1.1.0",
     "vue": "^2.6.10",
+    "vue-json-editor": "^1.4.3",
     "vue-json-viewer": "^2.2.21"
   },
   "devDependencies": {

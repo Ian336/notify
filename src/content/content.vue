@@ -1,57 +1,206 @@
 <template>
   <div>
-    <div>我是中国人</div>
+    <el-button
+      v-if="isMockDataBtn"
+      type="text"
+      @click="showDrawer"
+      icon="el-icon-search"
+      class="topTips"
+      >mock一下</el-button
+    >
+
+    <el-drawer
+      append-to-body
+      size="40%"
+      class="drawer"
+      :visible.sync="drawer"
+      :direction="direction"
+      @close="sendPostMessage"
+    >
+      <el-table :data="tableData" size="mini">
+        <el-table-column label="正则url" prop="regExp">
+          <template v-slot="{ row }">
+            <el-input
+              size="mini"
+              v-model="row.url"
+              placeholder="请入匹配的url"
+            ></el-input>
+          </template>
+        </el-table-column>
+
+        <el-table-column width="100" type="expand" label="替换数据">
+          <template v-slot="{ row }">
+            <vue-json-editor
+              v-model="row.replaceData"
+              :show-btns="true"
+              :mode="'code'"
+              lang="zh"
+              @json-change="onJsonChange"
+              @json-save="onJsonSave"
+              @has-error="onError"
+            ></vue-json-editor>
+          </template>
+        </el-table-column>
+        <el-table-column label="开关" prop="isOpen" width="50">
+          <template v-slot="{ row }">
+            <el-switch size="mini" v-model="row.isOpen"></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column width="70">
+          <template slot="header">
+            <el-button @click="addTableData" plain size="mini">添加</el-button>
+          </template>
+          <template v-slot="{ $index }">
+            <el-button size="mini" @click="delTableData($index)"
+              >删除</el-button
+            >
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-drawer>
   </div>
 </template>
 <script>
+import vueJsonEditor from 'vue-json-editor'
 export default {
-  data() {
+  data () {
     return {
-      
+      mapping: {
+        jQery: 'jquery',
+        Mock: 'mock',
+        MockData: 'myXMLHttpRequest',
+      },
+      isMockDataBtn: false,
+      tableData: [
+        {
+          url: '',
+          replaceData: {},
+          isOpen: false,
+        },
+      ],
+      drawer: false,
+      direction: 'rtl',
     }
   },
-  mounted() {
-    console.log(333,  chrome.runtime, chrome)
-    // this.getWorkTime()
-    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-      
-      let script1 = document.createElement('script')
-      let script2 = document.createElement('script')
-      let script3 = document.createElement('script')
-      console.log(message)
-      if(message.isOpenMyXMLHttpRequest){
-       window.postMessage({isOpenMyXMLHttpRequest:message.isOpenMyXMLHttpRequest,
-       myXMLHttpRequestData:message.myXMLHttpRequestData
-       }, '*');
-      }
-      if (message.isload) {
-        // script1.src = 'https://cdn.bootcss.com/jquery/3.2.1/jquery.js'
-        script1.src =  chrome.extension.getURL('assets/jquery.js')
-        script1.id='jQuery'
-        document.body.appendChild(script1)
-      
-        // script2.src =
-        //   'https://cdn.bootcdn.net/ajax/libs/Mock.js/1.0.1-beta3/mock-min.js'
-        script2.src = chrome.extension.getURL('assets/mock.js')
-          script2.id='mock'
-        document.body.appendChild(script2)
+  components: {
+    vueJsonEditor,
+  },
 
-
-         script3.src = chrome.extension.getURL('assets/myXMLHttpRequest.js')
-          script2.id='myXMLHttpRequest'
-        document.body.appendChild(script3)
-     
-
-      } else {
-       document.getElementById('mock').remove()
-       document.getElementById('jQuery').remove()
-       document.getElementById('myXMLHttpRequest').remove()
-      }
+  mounted () {
+    //file协议时计算敬业时长
+    if (location.protocol === 'file:') {
+      this.getWorkTime()
+    }
+    this.getStorage()
+    // this.sendPostMessage('moutend')
+    //mouted钩子发送消息一直监听不到
+    window.addEventListener("load", () => {
+      window.postMessage({
+        isOpenMyXMLHttpRequest: true,
+        myXMLHttpRequestData: JSON.parse(JSON.stringify(this.tableData)),
+      })
     })
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      console.log(message)
+      if (message.isOpenMyXMLHttpRequest) {
+        window.postMessage(
+          {
+            isOpenMyXMLHttpRequest: message.isOpenMyXMLHttpRequest,
+            myXMLHttpRequestData: message.myXMLHttpRequestData,
+          },
+          '*'
+        )
+      }
+      //添加依赖
+      if (message.dependents) {
+        this.clearAllDependents()
+        this.isMockDataBtn = false
+        message.dependents.forEach((item) => {
+          this.addLoad(item)
+          if (item === 'MockData') {
+            this.isMockDataBtn = true
+          }
+        })
+      }
 
+    })
   },
   methods: {
-    getWorkTime() {
+    addTableData () {
+      this.tableData.push({ url: "", replaceData: "", isOpen: false })
+    },
+    delTableData (index) {
+      this.tableData.splice(index, 1)
+    },
+    getStorage () {
+      chrome.storage.local.get(
+        ['notifyTime', 'tasks', 'closeNotify', 'dependents', 'tableData'],
+        (res) => {
+          if (res.tableData) {
+            this.tableData = res.tableData
+          }
+          if (res.dependents.length) {
+            this.isMockDataBtn = false
+            res.dependents.forEach((item) => {
+              this.addLoad(item)
+              if (item === 'MockData') {
+                this.isMockDataBtn = true
+              }
+            })
+          }
+        }
+      )
+    },
+    sendPostMessage (val) {
+      console.log(val, {
+        isOpenMyXMLHttpRequest: true,
+        myXMLHttpRequestData: JSON.parse(JSON.stringify(this.tableData)),
+      });
+
+      window.postMessage({
+        isOpenMyXMLHttpRequest: true,
+        myXMLHttpRequestData: JSON.parse(JSON.stringify(this.tableData)),
+      })
+      this.setStorage({ tableData: this.tableData })
+    },
+    setStorage (value, callback = () => { }) {
+      chrome.storage.local.set(value, function () {
+        callback()
+        console.log('设置', value)
+      })
+    },
+    onJsonChange (value) {
+      console.log('value:', value)
+    },
+    onJsonSave (value) {
+      console.log('value:', value)
+    },
+    onError (value) {
+      console.log('value:', value)
+    },
+
+    showDrawer () {
+      this.drawer = !this.drawer
+    },
+    clearAllDependents () {
+      Object.keys(this.mapping).forEach(item => {
+        this.delLoad(item)
+      })
+    },
+    addLoad (value) {
+      let script = document.createElement('script')
+      // script1.src = 'https://cdn.bootcss.com/jquery/3.2.1/jquery.js'
+      script.src = chrome.extension.getURL('assets/' + this.mapping[value] + '.js')
+      script.id = this.mapping[value]
+      document.body.append(script)
+      // document.head.insertBefore(script, document.head.firstChild)
+      // script2.src =
+      //   'https://cdn.bootcdn.net/ajax/libs/Mock.js/1.0.1-beta3/mock-min.js'
+    },
+    delLoad (value) {
+      document.getElementById(this.mapping[value]) && document.getElementById(this.mapping[value]).remove()
+    },
+    getWorkTime () {
       var trs = [].slice.call(document.querySelectorAll('tr'), 1)
       var firstTrChildren = [].slice.call(
         document.querySelectorAll('tr')[0].children
@@ -79,3 +228,15 @@ export default {
   },
 }
 </script>
+<style scoped>
+.topTips {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999999999;
+}
+.drawer {
+  height: 500px;
+  overflow: hidden;
+}
+</style>
