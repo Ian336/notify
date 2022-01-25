@@ -6,7 +6,11 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 
 var div = document.createElement('div')
-div.id = 'xuzhiqiang'
+div.id = 'app'
+var link  = document.createElement('link')
+link.rel='stylesheet'
+link.href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+document.body.insertBefore(link,document.body.firstChild)
 document.body.insertBefore(div,document.body.firstChild)
 console.log({ window, document })
 window.abc1 = 130
@@ -19,7 +23,7 @@ setTimeout(() => {
 }, 1000)
 
 new Vue({
-  el: '#xuzhiqiang',
+  el: '#app',
   render: (createElement) => {
     return createElement(content)
   },

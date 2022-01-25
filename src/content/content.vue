@@ -236,7 +236,6 @@ export default {
   z-index: 999999999;
 }
 .drawer {
-  height: 500px;
   overflow: hidden;
 }
 </style>
