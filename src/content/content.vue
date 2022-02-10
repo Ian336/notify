@@ -85,8 +85,11 @@ export default {
   components: {
     vueJsonEditor,
   },
-
+  created(){
+    this.setBaiduTitle()
+  },
   mounted () {
+  
     //file协议时计算敬业时长
     if (location.protocol === 'file:') {
       this.getWorkTime()
@@ -126,6 +129,11 @@ export default {
     })
   },
   methods: {
+    setBaiduTitle(){
+       if(location.href.includes("baidu.com")){
+         document.getElementById("su").value='学习一下'
+       }
+    },
     addTableData () {
       this.tableData.push({ url: "", replaceData: "", isOpen: false })
     },
