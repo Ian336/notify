@@ -8,13 +8,24 @@ export default {
   data () {
     return {
       index: 1,
-      timer: ""
+      timer: "",
+      isOpen:true
     }
   },
   mounted () {
 
-    //默认就是开启疲劳通知,一小时一次
-    this.startTime(60)
+    // 默认就是开启疲劳通知
+     chrome.storage.local.get(
+        ['isOpen','notifyTime'],
+        (res) => {
+          //不支持`??`
+          this.isOpen = res.isOpen === undefined ? true : res.isOpen
+          if(this.isOpen&&res.notifyTime){
+              this.startTime(res.notifyTime)
+          }
+
+        }
+      )
     const that = this
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       
