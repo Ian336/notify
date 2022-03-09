@@ -87,9 +87,10 @@ export default {
   },
   created(){
     this.setBaiduTitle()
+  
   },
   mounted () {
-  
+    this.deleteADTitle()
     //file协议时计算敬业时长
     if (location.protocol === 'file:') {
       this.getWorkTime()
@@ -129,6 +130,16 @@ export default {
     })
   },
   methods: {
+    deleteADTitle(){
+      //删除知乎
+      if(location.href.includes("zhihu.com")){      
+        document.getElementsByClassName('PageHeader')[0].style.display='none'
+
+      }else if(location.href.includes("jianshu.com")){
+        //删除简书
+        document.querySelector('[title]').style.display='none'
+      }
+    },
     setBaiduTitle(){
        if(location.href.includes("baidu.com")){
          document.getElementById("su").value='学习一下'
@@ -237,6 +248,8 @@ export default {
 }
 </script>
 <style scoped>
+
+
 .topTips {
   position: absolute;
   top: 0;
